@@ -11,11 +11,11 @@ export default class BookShelf extends React.Component {
       <div className="bookshelf">
         <h2 className="bookshelf-title">{shelfTitle}</h2>
         <div className="bookshelf-books">
-          {books && books.lenght ? (
+          {books && books.length > 0 ? (
             <ol className="books-grid">
               {books.map(b => {
                 return (
-                  <li>
+                  <li key>
                     <Book book={b} />
                   </li>
                 );
