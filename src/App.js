@@ -9,6 +9,10 @@ class BooksApp extends React.Component {
     books: []
   };
 
+  componentDidMount() {
+    this.getBooks();
+  }
+
   getBooks() {
     BooksAPI.getAll().then(b => {
       this.setState({
@@ -16,17 +20,9 @@ class BooksApp extends React.Component {
       });
     });
   }
-  componentDidMount() {
-    this.getBooks();
-  }
-
-  /*TODO: Perfomance issue: 
-  Is better add 3 more fields in state or execute filter operation in render method? 
-  I believe that is better let filter operation on render method instead create 3 extras states field. 
-  Anyway, filter operation will be called on componentDidMount. */
 
   render() {
-    alert("chamou render");
+    console.log("app render called");
     const { books } = this.state;
     const wantToRead = books.filter(book => book.shelf === "wantToRead");
     const currentlyReading = books.filter(
