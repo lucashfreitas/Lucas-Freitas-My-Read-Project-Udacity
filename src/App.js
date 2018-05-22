@@ -9,16 +9,15 @@ class BooksApp extends React.Component {
     books: []
   };
 
-  componentDidMount() {
-    this.getBooks();
-  }
-
   getBooks() {
     BooksAPI.getAll().then(b => {
       this.setState({
         books: b
       });
     });
+  }
+  componentDidMount() {
+    this.getBooks();
   }
 
   /*TODO: Perfomance issue: 
@@ -27,6 +26,7 @@ class BooksApp extends React.Component {
   Anyway, filter operation will be called on componentDidMount. */
 
   render() {
+    alert("chamou render");
     const { books } = this.state;
     const wantToRead = books.filter(book => book.shelf === "wantToRead");
     const currentlyReading = books.filter(
@@ -34,6 +34,8 @@ class BooksApp extends React.Component {
     );
 
     const read = books.filter(book => book.shelf === "read");
+
+    console.log(books);
 
     return (
       <div className="app">

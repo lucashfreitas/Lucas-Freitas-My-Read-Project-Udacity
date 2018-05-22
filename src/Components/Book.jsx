@@ -2,10 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 
 export default class Book extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     const { book } = this.props;
     return (

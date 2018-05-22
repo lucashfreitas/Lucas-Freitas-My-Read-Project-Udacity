@@ -4,13 +4,8 @@ import PropTypes from "prop-types";
 import Book from "./Book";
 
 export default class BookShelf extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     const { shelfTitle, books } = this.props;
-    console.log(this.props.books);
 
     return (
       <div className="bookshelf">
