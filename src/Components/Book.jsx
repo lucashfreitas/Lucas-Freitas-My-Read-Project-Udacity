@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 export default class Book extends React.Component {
   render() {
     const { book } = this.props;
+    console.log(this.props);
     return (
       <div className="book">
         <div className="book-top">
@@ -12,7 +13,7 @@ export default class Book extends React.Component {
             style={{
               width: 128,
               height: 193,
-              backgroundImage: book.bookImgUrl
+              backgroundImage: `url("${book.imageLinks.smallThumbnail}")`
             }}
           />
           <div className="book-shelf-changer">
@@ -27,8 +28,8 @@ export default class Book extends React.Component {
             </select>
           </div>
         </div>
-        <div className="book-title">{book.bookTitle}</div>
-        <div className="book-authors">{book.author}</div>
+        <div className="book-title">{book.title}</div>
+        <div className="book-authors">{book.authors}</div>
       </div>
     );
   }

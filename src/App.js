@@ -22,7 +22,6 @@ class BooksApp extends React.Component {
   }
 
   render() {
-    console.log("app render called");
     const { books } = this.state;
     const wantToRead = books.filter(book => book.shelf === "wantToRead");
     const currentlyReading = books.filter(
@@ -30,8 +29,6 @@ class BooksApp extends React.Component {
     );
 
     const read = books.filter(book => book.shelf === "read");
-
-    console.log(books);
 
     return (
       <div className="app">
