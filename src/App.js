@@ -7,9 +7,14 @@ import SearchBar from './Components/SearchBar';
 import BookShelf from './Components/BookShelf';
 
 class BooksApp extends React.Component {
-  state = {
-    books: [],
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      books: [],
+    };
+    this.getBooks = this.getBooks.bind(this);
+    this.changeShelf = this.changeShelf.bind(this);
+  }
 
   componentDidMount() {
     this.getBooks();
@@ -22,6 +27,16 @@ class BooksApp extends React.Component {
       });
     });
   }
+
+  changeShelf = (book, newShelf) => {
+    /* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign */
+    BooksAPI.update(book, newShelf).then(response => {
+      const { books } = this.state;
+      const index = books.findIndex(bk => bk.id === book.id);
+      books[index] = Object.assign({}, books[index], { shelf: newShelf });
+      this.setState({ books });
+    });
+  };
 
   render() {
     const { books } = this.state;
@@ -42,9 +57,17 @@ class BooksApp extends React.Component {
                 <h1>MyReads</h1>
               </div>
               <div className="list-books-content">
-                <BookShelf shelfTitle="Currently Reading" books={currentlyReading} />
-                <BookShelf shelfTitle="Want to Read" books={wantToRead} />
-                <BookShelf shelfTitle="Read" books={read} />
+                <BookShelf
+                  changeShelf={this.changeShelf}
+                  shelfTitle="Currently Reading"
+                  books={currentlyReading}
+                />
+                <BookShelf
+                  changeShelf={this.changeShelf}
+                  shelfTitle="Want to Read"
+                  books={wantToRead}
+                />
+                <BookShelf changeShelf={this.changeShelf} shelfTitle="Read" books={read} />
                 <div />
               </div>
               <div className="open-search">
