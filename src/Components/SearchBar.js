@@ -15,7 +15,7 @@ class SearchBar extends Component {
     return (
       <div className="search-books">
         <div className="search-books-bar">
-          <Link to={`${process.env.PUBLIC_URL}/`} className="close-search">
+          <Link to="/" className="close-search">
             Close
           </Link>
 
