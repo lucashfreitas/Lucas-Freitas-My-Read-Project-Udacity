@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Link } from 'react-router-dom';
 import * as BooksAPI from './BooksAPI';
 import './App.css';
-
+import ErrorBoundary from './Components/ErrorBoundary';
 import SearchBar from './Components/SearchBar';
 import BookShelf from './Components/BookShelf';
 
@@ -42,12 +42,20 @@ class BooksApp extends React.Component {
     const { books } = this.state;
     const wantToRead = books.filter(book => book.shelf === 'wantToRead');
     const currentlyReading = books.filter(book => book.shelf === 'currentlyReading');
-
     const read = books.filter(book => book.shelf === 'read');
 
     return (
       <div className="app">
-        <Route exact path="/search" render={() => <SearchBar />} />
+        <Route
+          exact
+          path="/search"
+          render={() => (
+            <ErrorBoundary>
+              <SearchBar changeShelf={this.changeShelf} />
+            </ErrorBoundary>
+          )}
+        />
+
         <Route
           exact
           path="/"

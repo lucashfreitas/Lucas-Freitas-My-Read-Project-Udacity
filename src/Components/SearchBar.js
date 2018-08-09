@@ -1,29 +1,68 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import Book from './Book';
+import ErrorBoundary from './ErrorBoundary';
+import * as BooksAPI from '../BooksAPI';
 
-const SearchBar = () => (
-  <div className="search-books">
-    <div className="search-books-bar">
-      <Link to={`${process.env.PUBLIC_URL}/`} className="close-search">
-        Close
-      </Link>
+class SearchBar extends Component {
+  constructor(props) {
+    super(props);
+    this.searchBooks = this.searchBooks.bind(this);
+    this.state = {
+      filteredBooks: [],
+    };
+  }
 
-      <div className="search-books-input-wrapper">
-        {/*
-        NOTES: The search from BooksAPI is limited to a particular set of search terms.
-        You can find these search terms here:
-        https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
+  searchBooks(inputValue) {
+    BooksAPI.search(inputValue).then(response => {
+      this.setState({ filteredBooks: response });
+      console.log(this.state.filteredBooks);
+    });
+  }
 
-        However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-        you don't find a specific author or title. Every search is limited by search terms.
-      */}
-        <input type="text" placeholder="Search by title or author" />
+  render() {
+    const { changeShelf } = this.props;
+    const { filteredBooks } = this.state;
+    return (
+      <div className="search-books">
+        <div className="search-books-bar">
+          <Link to={`${process.env.PUBLIC_URL}/`} className="close-search">
+            Close
+          </Link>
+
+          <div className="search-books-input-wrapper">
+            {}
+            <input
+              onChange={e => this.searchBooks(e.target.value)}
+              type="text"
+              placeholder="Search by title or author"
+            />
+          </div>
+        </div>
+        <div className="search-books-results">
+          {filteredBooks && filteredBooks.length > 0 ? (
+            <ol className="books-grid">
+              <ErrorBoundary>
+                {filteredBooks.map(b => (
+                  <li key={b.id}>
+                    {console.log(b)}
+                    <Book changeShelf={changeShelf} book={b} />
+                  </li>
+                ))}
+              </ErrorBoundary>
+            </ol>
+          ) : (
+            <div>Nenhum Livro na estante</div>
+          )}
+        </div>
       </div>
-    </div>
-    <div className="search-books-results">
-      <ol className="books-grid" />
-    </div>
-  </div>
-);
+    );
+  }
+}
+
+SearchBar.propTypes = {
+  changeShelf: PropTypes.func.isRequired,
+};
 
 export default SearchBar;
