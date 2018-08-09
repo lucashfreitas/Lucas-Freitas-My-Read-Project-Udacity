@@ -11,9 +11,11 @@ class BooksApp extends React.Component {
     super(props);
     this.state = {
       books: [],
+      filteredBooks: [],
     };
     this.getBooks = this.getBooks.bind(this);
     this.changeShelf = this.changeShelf.bind(this);
+    this.searchBooks = this.searchBooks.bind(this);
   }
 
   componentDidMount() {
@@ -38,8 +40,22 @@ class BooksApp extends React.Component {
     });
   };
 
-  render() {
+  searchBooks(inputValue) {
     const { books } = this.state;
+    BooksAPI.search(inputValue).then(response => {
+      if (response && response.length > 0) {
+        response.forEach((item, index) => {
+          const findBookShelf = books.find(b => b.id === item.id);
+          /* Foreach doesnt not work by reference. */
+          response[index].shelf = findBookShelf ? findBookShelf.shelf : 'none';
+        });
+        this.setState({ filteredBooks: response });
+      } else this.setState({ filteredBooks: [] });
+    });
+  }
+
+  render() {
+    const { books, filteredBooks } = this.state;
     const wantToRead = books.filter(book => book.shelf === 'wantToRead');
     const currentlyReading = books.filter(book => book.shelf === 'currentlyReading');
     const read = books.filter(book => book.shelf === 'read');
@@ -51,7 +67,11 @@ class BooksApp extends React.Component {
           path="/search"
           render={() => (
             <ErrorBoundary>
-              <SearchBar changeShelf={this.changeShelf} />
+              <SearchBar
+                filteredBooks={filteredBooks}
+                searchBooks={this.searchBooks}
+                changeShelf={this.changeShelf}
+              />
             </ErrorBoundary>
           )}
         />

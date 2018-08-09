@@ -17,11 +17,13 @@ const Book = props => {
           }}
         />
         <div className="book-shelf-changer">
+          {console.log(book)}
+
           <select
+            value={book.shelf}
             onChange={event =>
               book.shelf !== event.target.value && changeShelf(book, event.target.value)
             }
-            value={book.shelf}
           >
             <option disabled>Move to...</option>
             <option value="currentlyReading">Currently Reading</option>

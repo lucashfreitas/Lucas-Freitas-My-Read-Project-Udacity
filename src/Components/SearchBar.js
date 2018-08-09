@@ -3,27 +3,15 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Book from './Book';
 import ErrorBoundary from './ErrorBoundary';
-import * as BooksAPI from '../BooksAPI';
 
 class SearchBar extends Component {
   constructor(props) {
     super(props);
-    this.searchBooks = this.searchBooks.bind(this);
-    this.state = {
-      filteredBooks: [],
-    };
-  }
-
-  searchBooks(inputValue) {
-    BooksAPI.search(inputValue).then(response => {
-      this.setState({ filteredBooks: response });
-      console.log(this.state.filteredBooks);
-    });
   }
 
   render() {
-    const { changeShelf } = this.props;
-    const { filteredBooks } = this.state;
+    const { changeShelf, searchBooks, filteredBooks } = this.props;
+
     return (
       <div className="search-books">
         <div className="search-books-bar">
@@ -34,7 +22,7 @@ class SearchBar extends Component {
           <div className="search-books-input-wrapper">
             {}
             <input
-              onChange={e => this.searchBooks(e.target.value)}
+              onChange={e => searchBooks(e.target.value)}
               type="text"
               placeholder="Search by title or author"
             />
@@ -46,7 +34,6 @@ class SearchBar extends Component {
               <ErrorBoundary>
                 {filteredBooks.map(b => (
                   <li key={b.id}>
-                    {console.log(b)}
                     <Book changeShelf={changeShelf} book={b} />
                   </li>
                 ))}
@@ -63,6 +50,8 @@ class SearchBar extends Component {
 
 SearchBar.propTypes = {
   changeShelf: PropTypes.func.isRequired,
+  filteredBooks: PropTypes.array.isRequired,
+  searchBooks: PropTypes.func.isRequired,
 };
 
 export default SearchBar;
