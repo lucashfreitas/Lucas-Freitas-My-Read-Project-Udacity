@@ -7,11 +7,22 @@ import ErrorBoundary from './ErrorBoundary';
 class SearchBar extends Component {
   constructor(props) {
     super(props);
+    this.searchInput = this.searchInput.bind(this);
+
+    this.state = {
+      query: '',
+    };
+  }
+
+  searchInput(newText) {
+    const { searchBooks } = this.props;
+    this.setState({ query: newText });
+    searchBooks(newText);
   }
 
   render() {
-    const { changeShelf, searchBooks, filteredBooks } = this.props;
-
+    const { filteredBooks, changeShelf } = this.props;
+    const { query } = this.state;
     return (
       <div className="search-books">
         <div className="search-books-bar">
@@ -22,7 +33,8 @@ class SearchBar extends Component {
           <div className="search-books-input-wrapper">
             {}
             <input
-              onChange={e => searchBooks(e.target.value)}
+              onChange={e => this.searchInput(e.target.value)}
+              value={query}
               type="text"
               placeholder="Search by title or author"
             />

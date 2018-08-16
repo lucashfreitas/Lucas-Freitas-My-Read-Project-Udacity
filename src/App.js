@@ -19,6 +19,8 @@ class BooksApp extends React.Component {
   }
 
   componentDidMount() {
+    console.log('did mount called');
+    this.setState({ filteredBooks: [] });
     this.getBooks();
   }
 
@@ -31,12 +33,12 @@ class BooksApp extends React.Component {
   }
 
   changeShelf = (book, newShelf) => {
+    const { filteredBooks } = this.state;
     /* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign */
-    BooksAPI.update(book, newShelf).then(response => {
-      const { books } = this.state;
-      const index = books.findIndex(bk => bk.id === book.id);
-      books[index] = Object.assign({}, books[index], { shelf: newShelf });
-      this.setState({ books });
+    BooksAPI.update(book, newShelf).then(() => {
+      this.getBooks();
+      /* //update search books shelf */
+      filteredBooks.find(e => e.id === book.id).shelf = newShelf;
     });
   };
 

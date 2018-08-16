@@ -17,8 +17,6 @@ const Book = props => {
           }}
         />
         <div className="book-shelf-changer">
-          {console.log(book)}
-
           <select
             value={book.shelf}
             onChange={event =>
