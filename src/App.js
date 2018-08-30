@@ -19,7 +19,6 @@ class BooksApp extends React.Component {
   }
 
   componentDidMount() {
-    console.log('did mount called');
     this.setState({ filteredBooks: [] });
     this.getBooks();
   }
@@ -38,7 +37,10 @@ class BooksApp extends React.Component {
     BooksAPI.update(book, newShelf).then(() => {
       this.getBooks();
       /* //update search books shelf */
-      filteredBooks.find(e => e.id === book.id).shelf = newShelf;
+
+      if (filteredBooks.length > 0 && filteredBooks.find(e => e.id === book.id)) {
+        filteredBooks.find(e => e.id === book.id).shelf = newShelf;
+      }
     });
   };
 
