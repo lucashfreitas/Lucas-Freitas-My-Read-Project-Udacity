@@ -15,10 +15,9 @@ Then, start the website using the command <i>yarn start</i> or <i>npm start</i>
 - I also kept all state control in the parent component using the most part of child component as functional components (as long they don't need to control any state).  (https://reactjs.org/docs/components-and-props.html)
 
 
-## Improvements: TODO
+## Improvements:
 
-- Implement Tests for features
-- 
+- Implement Unit/Integration Tests.
 
 
 
