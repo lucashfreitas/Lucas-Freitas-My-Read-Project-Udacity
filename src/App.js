@@ -1,10 +1,11 @@
 import React from 'react';
-import { Route, Link } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import * as BooksAPI from './BooksAPI';
 import './App.css';
 import ErrorBoundary from './Components/ErrorBoundary';
 import SearchBar from './Components/SearchBar';
-import BookShelf from './Components/BookShelf';
+
+import BookShelfList from './Components/BookShelfList';
 
 class BooksApp extends React.Component {
   constructor(props) {
@@ -37,9 +38,9 @@ class BooksApp extends React.Component {
     BooksAPI.update(book, newShelf).then(() => {
       this.getBooks();
       /* //update search books shelf */
-
-      if (filteredBooks.length > 0 && filteredBooks.find(e => e.id === book.id)) {
-        filteredBooks.find(e => e.id === book.id).shelf = newShelf;
+      const filteredBook = filteredBooks.find(e => e.id === book.id);
+      if (filteredBook) {
+        filteredBook.shelf = newShelf;
       }
     });
   };
@@ -83,30 +84,7 @@ class BooksApp extends React.Component {
         <Route
           exact
           path="/"
-          render={() => (
-            <div className="list-books">
-              <div className="list-books-title">
-                <h1>MyReads</h1>
-              </div>
-              <div className="list-books-content">
-                <BookShelf
-                  changeShelf={this.changeShelf}
-                  shelfTitle="Currently Reading"
-                  books={currentlyReading}
-                />
-                <BookShelf
-                  changeShelf={this.changeShelf}
-                  shelfTitle="Want to Read"
-                  books={wantToRead}
-                />
-                <BookShelf changeShelf={this.changeShelf} shelfTitle="Read" books={read} />
-                <div />
-              </div>
-              <div className="open-search">
-                <Link to={`${process.env.PUBLIC_URL}/search`} />
-              </div>
-            </div>
-          )}
+          render={() => <BookShelfList books={this.state.books} changeShelf={this.changeShelf} />}
         />
       </div>
     );
